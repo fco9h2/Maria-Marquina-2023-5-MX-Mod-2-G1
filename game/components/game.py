@@ -1,7 +1,9 @@
 import pygame
 
 from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
-
+from game.components.spaceship import Spaceship
+# game tiene una nave
+# game puede decirle al spaceship que se actualize on unpdate()
 
 class Game:
     def __init__(self):
@@ -14,6 +16,7 @@ class Game:
         self.game_speed = 10 # el numero de pixeles que el "objeto / imagen" se mueve en patalla
         self.x_pos_bg = 0
         self.y_pos_bg = 0
+        self.spaceship = Spaceship()
 
     def run(self):
         # Game loop: events - update - draw
@@ -34,12 +37,20 @@ class Game:
                 self.playing = False
 
     def update(self):
-        pass # pass equivale a hacer nada 
+        events = pygame.key.get_pressed()  #contiene todos los eventos del teclado
+        self.spaceship.update(events)
 
     def draw(self):
         self.clock.tick(FPS) # configuro cuantos frames per second voy a dibujar
         self.screen.fill((255, 255, 255)) # lleno el screen de color BLANCO???? 255, 255, 255 es el codigo RGB
+        
+        # este comando es para dibujar escenario
         self.draw_background()
+        
+        # aqui se le ordena al spaceship dibujarse por el metodo draw
+        # el metodo draw espera que le pasen screen
+        self.spaceship.draw(self.screen)
+        
         pygame.display.update() # esto hace que el dibujo se actualice en el display de pygame
         pygame.display.flip()  # hace el cambio
 
